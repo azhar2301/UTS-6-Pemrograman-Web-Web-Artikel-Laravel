@@ -1,3 +1,13 @@
+## UJIAN TENGAH SEMESTER 6 - PEMROGRAMAN WEB
+
+### Kelompok 6
+ 1) Muhammad Azhar - 2322105075
+ 2) Muhammad Imam Muttaqin - 2322105074
+ 3) Muhammad Daffa - 2322105065
+ 4) Fadliyudin - 2322105064
+
+---
+
 ## Cara Menjalankan Project
 
 ### 1. Clone repository
