@@ -22,7 +22,7 @@
             Daftar Artikel
         </h2>
 
-        <!-- GRID 3 KOLOM -->
+        <!-- GRID -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
             @forelse($articles as $a)
@@ -32,10 +32,23 @@
                           hover:shadow-xl hover:-translate-y-1 
                           transition duration-300 cursor-pointer">
 
+                    <!-- GAMBAR -->
+                    @if($a->image)
+                        <img src="{{ asset('storage/' . $a->image) }}"
+                             class="w-full h-40 object-cover rounded mb-3">
+                    @endif
+
+                    <!-- JUDUL -->
                     <h3 class="text-lg font-bold text-gray-800">
                         {{ $a->title }}
                     </h3>
 
+                    <!-- TANGGAL -->
+                    <p class="text-xs text-gray-400 mt-1">
+                        {{ $a->created_at->format('d M Y') }}
+                    </p>
+
+                    <!-- ISI SINGKAT -->
                     <p class="text-gray-600 mt-2 text-sm">
                         {{ \Illuminate\Support\Str::limit($a->content, 100) }}
                     </p>

@@ -7,28 +7,16 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    // ======================
-    // USER (HALAMAN DEPAN)
-    // ======================
     public function publicIndex()
     {
         $articles = Article::latest()->get();
         return view('articles.index', compact('articles'));
     }
 
-    public function show(string $id)
-    {
-        $article = Article::findOrFail($id);
-        return view('articles.show', compact('article'));
-    }
-
-    // ======================
-    // ADMIN
-    // ======================
     public function index()
     {
         $articles = Article::all();
-        return view('admin.index', compact('articles')); // ✅ INI YANG PENTING
+        return view('admin.index', compact('articles'));
     }
 
     public function create()
@@ -40,15 +28,29 @@ class ArticleController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'content' => 'required'
+            'content' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
+
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('articles', 'public');
+        }
 
         Article::create([
             'title' => $request->title,
-            'content' => $request->content
+            'content' => $request->content,
+            'image' => $imagePath
         ]);
 
         return redirect('/admin/articles');
+    }
+
+    public function show(string $id)
+    {
+        $article = Article::findOrFail($id);
+        return view('articles.show', compact('article'));
     }
 
     public function edit(string $id)
@@ -61,10 +63,16 @@ class ArticleController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'content' => 'required'
+            'content' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         $article = Article::findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('articles', 'public');
+            $article->image = $imagePath;
+        }
 
         $article->update([
             'title' => $request->title,
